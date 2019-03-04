@@ -7,7 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/gabe/sandbox/devel:$CMAKE_PREFIX_PATH"
 export PWD="/home/gabe/sandbox/build"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/gabe/sandbox/devel/share/common-lisp"
-export ROS_PACKAGE_PATH="/home/gabe/sandbox/src:$ROS_PACKAGE_PATH"

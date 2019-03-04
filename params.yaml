@@ -1,0 +1,12 @@
+background_b: 0
+background_g: 86
+background_r: 69
+rosdistro: 'melodic
+
+  '
+roslaunch:
+  uris: {host_bigboi__42931: 'http://bigboi:42931/'}
+rosversion: '1.14.3
+
+  '
+run_id: 0c6fa186-3bd6-11e9-9bad-94b86dd32007
