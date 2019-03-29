@@ -1,2 +1,2 @@
-beginner_tutorials
+beginner_tutorials:motor_control
 -DCATKIN_DEVEL_PREFIX=/home/gabe/sandbox/devel -DCMAKE_INSTALL_PREFIX=/home/gabe/sandbox/install -G Unix Makefiles
