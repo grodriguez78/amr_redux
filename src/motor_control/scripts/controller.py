@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 mcPins = [6, 13, 19, 26] # pins used for motor control
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(6, GPIO.OUT, initial=GPIO.LOW)
 
 
 def controller():
