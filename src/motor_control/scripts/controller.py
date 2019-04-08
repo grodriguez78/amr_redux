@@ -2,6 +2,7 @@
 
 import rospy
 import RPi.GPIO as GPIO
+from motor_control.msg import WheelVelocity
 
 mcPins = [6, 13, 19, 26] # pins used for motor control
 
@@ -9,9 +10,15 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 
 
+def callback(data):
+	rospy.loginfo(rospy.get_caller_id() + "I heard $s", data.data)
+
 def controller():
 	## Convert angular velocity signal into individual PWM signals
 	rospy.init_node('controller', anonymous=True)
+
+	rospy.Subscriber("robot_dynamics", WheelVelocity, callback)
+
 	rate = rospy.Rate(10) # 10hz
 
 	# Set pins 6, 19 to HIGH
