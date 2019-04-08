@@ -1,2 +1,0 @@
-beginner_tutorials
--DCATKIN_DEVEL_PREFIX=/home/gabe/sandbox/devel -DCMAKE_INSTALL_PREFIX=/home/gabe/sandbox/install -G Unix Makefiles
