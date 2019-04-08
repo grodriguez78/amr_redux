@@ -11,7 +11,8 @@ GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 
 
 def callback(data):
-	rospy.loginfo(rospy.get_caller_id() + "I heard $s", data.data)
+	rospy.loginfo(rospy.get_caller_id() + "Setting right wheel: $s\n Setting left wheel: $s", 
+				  data.rightVelocity, data.leftVelocity)
 
 def controller():
 	## Convert angular velocity signal into individual PWM signals
