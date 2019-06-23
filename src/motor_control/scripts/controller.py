@@ -9,10 +9,10 @@ mcPins = [6, 13, 19, 26] # pins used for motor control
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 
-left_fwd = GPIO.PWM(6, 100)
-left_bkwds = GPIO.PWM(13, 100)
-right_fwd = GPIO.PWM(19, 100)
-right_bkwds = GPIO.PWM(26, 100)
+left_fwd = GPIO.PWM(19, 100)
+left_bkwds = GPIO.PWM(26, 100)
+right_fwd = GPIO.PWM(6, 100)
+right_bkwds = GPIO.PWM(13, 100)
 
 def set_wheel_velocities(v_l, v_r):
 	## Drive left and right wheels at angular velocities v_l, v_r
