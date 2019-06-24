@@ -32,11 +32,11 @@ def set_wheel_velocities(w_left, w_right):
 	"""
 
 	## Left wheel
-	if v_l > 0:
+	if v_left > 0:
 		left_bkwds.stop()
 		left_fwd.start(scale_velocity(w_left))
 
-	elif v_l < 0:
+	elif v_left < 0:
 		left_fwd.stop()
 		left_bkwds.start(scale_velocity(w_left))
 
@@ -45,11 +45,11 @@ def set_wheel_velocities(w_left, w_right):
 		left_bkwds.stop()
 
 	## Right wheel
-	if v_r > 0:
+	if v_right > 0:
 		right_bkwds.stop()
 		right_fwd.start(scale_velocity(w_right))
 
-	elif v_r < 0:
+	elif v_right < 0:
 		right_fwd.stop()
 		right_bkwds.start(scale_velocity(w_right))
 
