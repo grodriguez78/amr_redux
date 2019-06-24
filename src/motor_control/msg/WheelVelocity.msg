@@ -1,2 +1,2 @@
-float32 rightVelocity
-float32 leftVelocity
+float32 w_right
+float32 w_left

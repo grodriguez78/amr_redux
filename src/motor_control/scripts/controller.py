@@ -14,19 +14,31 @@ left_bkwds = GPIO.PWM(26, 100)
 right_fwd = GPIO.PWM(6, 100)
 right_bkwds = GPIO.PWM(13, 100)
 
-def set_wheel_velocities(v_l, v_r):
-	## Drive left and right wheels at angular velocities v_l, v_r
-	## Using PWM to interpolate between v_max = ?? and v_min = 0
+w_max = 20 ## Max motor angular velocity (rad/s) 
+r_wheel = 1.75 ## Wheel radius (cm)
+d_base = 17.8 ## Wheelbase diameter (cm)
 
+
+def scale_velocity(w):
+	""" Convert angular velocity w to a PWM duty cycle 
+
+	"""
+	return min(abs(w)/w_max, 1)*100
+
+
+def set_wheel_velocities(w_left, w_right):
+	""" Drive left and right wheels at angular velocities w_l, w_r
+
+	"""
 
 	## Left wheel
 	if v_l > 0:
 		left_bkwds.stop()
-		left_fwd.start(50)
+		left_fwd.start(scale_velocity(w_left))
 
 	elif v_l < 0:
 		left_fwd.stop()
-		left_bkwds.start(50)
+		left_bkwds.start(scale_velocity(w_left))
 
 	else: 
 		left_fwd.stop()
@@ -35,11 +47,11 @@ def set_wheel_velocities(v_l, v_r):
 	## Right wheel
 	if v_r > 0:
 		right_bkwds.stop()
-		right_fwd.start(50)
+		right_fwd.start(scale_velocity(w_right))
 
 	elif v_r < 0:
 		right_fwd.stop()
-		right_bkwds.start(50)
+		right_bkwds.start(scale_velocity(w_right))
 
 	else:
 		right_fwd.stop()
@@ -47,10 +59,10 @@ def set_wheel_velocities(v_l, v_r):
 
 
 def callback(data):
-	rospy.loginfo(rospy.get_caller_id() + " Setting right wheel: %d", data.rightVelocity)
-	rospy.loginfo(rospy.get_caller_id() + " Setting left wheel: %d", data.leftVelocity)
+	rospy.loginfo(rospy.get_caller_id() + " Setting right wheel: %d", data.w_left)
+	rospy.loginfo(rospy.get_caller_id() + " Setting left wheel: %d", data.w_right)
 
-	set_wheel_velocities(data.leftVelocity, data.rightVelocity)
+	set_wheel_velocities(data.w_left, data.w_right)
 
 
 def controller():
