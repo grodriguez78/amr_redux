@@ -6,7 +6,7 @@ from motor_control.msg import WheelVelocity
 
 from utils import scale_velocity
 
-mcPins = [6, 13, 19, 26] # pins used for motor control
+mcPins = [16, 20, 19, 26] # pins used for motor control
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
