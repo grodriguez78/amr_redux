@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 
-w_max = 20 ## Max motor angular velocity (rad/s) 
-r_wheel = 1.75 ## Wheel radius (cm)
-d_base = 17.8 ## Wheelbase diameter (cm)
-
-V_max = 12 ## Max motor voltage
-V_min = 3 ## Min motor voltage to produce movement once static friction is overcome 
-
+from hardware_config import motors
 
 def scale_velocity(w):
 	""" Convert angular velocity w to a PWM duty cycle 
@@ -22,7 +16,7 @@ def scale_velocity(w):
 
 	if w == 0: return 0
 
-	V_pwm = min(abs(float(w))/(w_max), 1)*(V_max - V_min) + V_min
-	duty_cycle = (V_pwm / V_max) * 100
+	V_pwm = min(abs(float(w))/(motors.w_max), 1)*(motors.V_max - motors.V_min) + motors.V_min
+	duty_cycle = (V_pwm / motors.V_max) * 100
 
 	return duty_cycle
