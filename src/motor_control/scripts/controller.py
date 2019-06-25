@@ -13,8 +13,8 @@ GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 
 left_fwd = GPIO.PWM(19, 100)
 left_bkwds = GPIO.PWM(26, 100)
-right_fwd = GPIO.PWM(6, 100)
-right_bkwds = GPIO.PWM(13, 100)
+right_fwd = GPIO.PWM(16, 100)
+right_bkwds = GPIO.PWM(20, 100)
 
 
 def set_wheel_velocities(w_left, w_right):
