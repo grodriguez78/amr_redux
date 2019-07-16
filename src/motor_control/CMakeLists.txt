@@ -8,8 +8,8 @@ project(motor_control)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED 
-  COMPONENTS roscpp rospy std_msgs remote_command
-  message_generation hardware_config)
+  COMPONENTS roscpp rospy std_msgs
+  message_generation)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -69,6 +69,7 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs
+  system_state
   remote_command
 )
 
@@ -102,10 +103,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-# INCLUDE_DIRS include
+  INCLUDE_DIRS include
   LIBRARIES motor_control
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime hardware_config remote_command
-  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime hardware_config system_state remote_command
 )
 
 ###########
@@ -115,8 +115,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+  include
+  ${system_state_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -127,7 +127,10 @@ include_directories(
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(
+#   motor_control
+#   system_state
+# )
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -142,11 +145,18 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(motor_control
+#   system_state
+# )
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
+# target_link_libraries(
+#   motor_control
 #   ${catkin_LIBRARIES}
+#   ${CMAKE_DL_LIBS}
+#   ${LIBDISPATCH_LIBRARIES}
+#   ${CMAKE_THREAD_LIBS_INIT}
+#   dispatch
 # )
 
 #############

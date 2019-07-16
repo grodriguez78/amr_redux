@@ -106,7 +106,6 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES system_state
   CATKIN_DEPENDS roscpp rospy std_msg message_runtime
-  DEPENDS system_lib
 )
 
 ###########

@@ -2,7 +2,8 @@
 
 import rospy
 from motor_control.msg import WheelVelocity
-from remote_commands.msg import DualshockInputs
+from system_state.msg import WorkerState
+from remote_command.msg import DualshockInputs
 
 
 class Planner():
@@ -22,13 +23,13 @@ class Planner():
 		self.state = data.state
 
 
-	def plan_motion():
+	def plan_motion(self):
 		## Convert intertial v_x, v_y, eps into 
 		## individual wheel angular velocities
 
 		pub = rospy.Publisher('robot_dynamics', WheelVelocity, queue_size=10)
-		state_sub = rospy.Subscriber('lilboi_state', WorkerState, state_callback)
-		cmd_sub = rospy.Subscriber('remote_commands', DualshockInputs, cmd_callback)
+		state_sub = rospy.Subscriber('lilboi_state', WorkerState, self.state_callback)
+		cmd_sub = rospy.Subscriber('remote_commands', DualshockInputs, self.cmd_callback)
 
 		rospy.init_node('motionPlanner', anonymous=True)
 		rate = rospy.Rate(10)
