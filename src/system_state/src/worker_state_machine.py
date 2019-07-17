@@ -26,8 +26,8 @@ class WorkerStateMachine():
 
 
 	def change_state(self, new_state):
-		state_change_msg = 'Lilboi transitioned from state %i (%s) to state %i (%s)'%(self.state, STATE_NAME_MAP[self.state], new_state, STATE_NAME_MAP[new_state])
-		rospy.loginfo(state_change_msg)
+		state_change_msg = ' Lilboi transitioned from state %i (%s) to state %i (%s)'%(self.state, STATE_NAME_MAP[self.state], new_state, STATE_NAME_MAP[new_state])
+		rospy.loginfo(rospy.get_caller_id() + state_change_msg)
 		self.state = new_state
 
 
@@ -61,8 +61,7 @@ class WorkerStateMachine():
 
 		## Default to state 0 (CHARGING/INACTIVE)
 		state = 0
-		state_change_msg = 'Lilboi initialized to state %i: (%s)' %(state, STATE_NAME_MAP[state]) 
-		rospy.loginfo(state_change_msg)
+		self.change_state(0)
 
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():

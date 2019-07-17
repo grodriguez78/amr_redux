@@ -11,8 +11,8 @@ mcPins = [16, 20, 19, 26] # pins used for motor control
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 
-left_fwd = GPIO.PWM(19, 100)
-left_bkwds = GPIO.PWM(26, 100)
+left_fwd = GPIO.PWM(26, 100)
+left_bkwds = GPIO.PWM(19, 100)
 right_fwd = GPIO.PWM(16, 100)
 right_bkwds = GPIO.PWM(20, 100)
 
@@ -50,8 +50,8 @@ def set_wheel_velocities(w_left, w_right):
 
 
 def callback(data):
-	rospy.loginfo(rospy.get_caller_id() + "w_left: %d", data.w_left)
-	rospy.loginfo(rospy.get_caller_id() + "w_right: %d", data.w_right)
+	rospy.loginfo(rospy.get_caller_id() + " w_left: %d", data.w_left)
+	rospy.loginfo(rospy.get_caller_id() + " w_right: %d", data.w_right)
 
 	set_wheel_velocities(data.w_left, data.w_right)
 

@@ -47,7 +47,7 @@ class Planner():
 
 		while not rospy.is_shutdown():
 
-			pub.publish(self.cmd_left, self.cmd_right)
+			pub.publish(self.cmd_right, self.cmd_left)
 			rate.sleep()
 
 if __name__ == '__main__':
