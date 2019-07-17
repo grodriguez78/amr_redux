@@ -71,6 +71,7 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
+  remote_command
 )
 
 ################################################
@@ -105,7 +106,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES system_state
-  CATKIN_DEPENDS roscpp rospy std_msg message_runtime
+  CATKIN_DEPENDS roscpp rospy std_msg message_runtime remote_command
 )
 
 ###########
