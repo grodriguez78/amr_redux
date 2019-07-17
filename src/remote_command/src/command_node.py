@@ -31,6 +31,8 @@ BUTTON_NAMES = {
 	12: 'right_stick'
 }
 
+INVERTED_Y_AXIS = True
+
 def pub_commands():
 	## Read inputs from Dualshock Controller & publish to remote_commands message
 
@@ -43,7 +45,7 @@ def pub_commands():
 	controller = pygame.joystick.Joystick(0)
 	controller.init()
 
-	## Initialize at 0 inputs
+	## Initialize all inputs to 0
 	inputs = DualshockInputs()
 
 	rate = rospy.Rate(10)
@@ -53,7 +55,10 @@ def pub_commands():
 		for event in pygame.event.get():
 			if event.type == pygame.JOYAXISMOTION:
 				for axis in AXIS_NAMES.keys():
-					setattr(inputs, AXIS_NAMES[axis], controller.get_axis(axis))
+					if INVERTED_Y_AXIS and axis in [1, 4]:
+						setattr(inputs, AXIS_NAMES[axis], -1 * controller.get_axis(axis))
+					else:
+						setattr(inputs, AXIS_NAMES[axis], controller.get_axis(axis))
 				pub.publish(inputs)
 			if event.type == pygame.JOYBUTTONDOWN:
 				setattr(inputs, BUTTON_NAMES[event.button], True)
@@ -61,6 +66,7 @@ def pub_commands():
 			if event.type == pygame.JOYBUTTONUP:
 				setattr(inputs, BUTTON_NAMES[event.button], False)
 		rate.sleep()
+
 
 if __name__ == '__main__':
 	try:

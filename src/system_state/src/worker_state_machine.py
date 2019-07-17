@@ -37,9 +37,11 @@ class WorkerStateMachine():
 		if self.state == 0:
 			if self.triangle_pressed(data.triangle): self.change_state(1)
 
+		## Manual Control
 		elif self.state == 1:
 			if self.triangle_pressed(data.triangle): self.change_state(2)
 
+		## Autonomous Control
 		elif self.state == 2:
 			if self.triangle_pressed(data.triangle): self.change_state(1)
 
@@ -48,34 +50,23 @@ class WorkerStateMachine():
 
 
 	def run_state_machine(self):
-		## Determine the current state of this worker
+		## Initialize state machine and publish the current state of this worker
 
 		## TODO: Name node based on worker ID
 		rospy.init_node('lilboi_state_machine', anonymous=True)
 		self.pub = rospy.Publisher('lilboi_state', WorkerState, queue_size=10)
 		self.sub = rospy.Subscriber('remote_commands', DualshockInputs, self.user_input_transitions)
 
+		## TODO: Charging auto-transitions
+
 		## Default to state 0 (CHARGING/INACTIVE)
 		state = 0
-		state_change_msg = 'Lilboi is now in state %i: (%s)' %(state, STATE_NAME_MAP[state]) 
+		state_change_msg = 'Lilboi initialized to state %i: (%s)' %(state, STATE_NAME_MAP[state]) 
 		rospy.loginfo(state_change_msg)
 
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
 			self.pub.publish(self.state)
-
-			# if state == 0:
-			# 	if triangle is pressed: state = 1 
-			# 	if charged and task is available: state = 2
-
-			# elif state == 1:
-			# 	if battery is depleted: state = 0
-			#	if triangle is pressed: state = 2
-
-			# elif state == 2:
-			# 	if battery is depleted: state = 0
-			# 	if trangle is pressed: state = 1
-
 
 			rate.sleep()
 

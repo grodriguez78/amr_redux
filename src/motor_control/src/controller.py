@@ -50,8 +50,8 @@ def set_wheel_velocities(w_left, w_right):
 
 
 def callback(data):
-	rospy.loginfo(rospy.get_caller_id() + " Setting right wheel: %d", data.w_left)
-	rospy.loginfo(rospy.get_caller_id() + " Setting left wheel: %d", data.w_right)
+	rospy.loginfo(rospy.get_caller_id() + "w_left: %d", data.w_left)
+	rospy.loginfo(rospy.get_caller_id() + "w_right: %d", data.w_right)
 
 	set_wheel_velocities(data.w_left, data.w_right)
 
@@ -65,8 +65,7 @@ def controller():
 	rate = rospy.Rate(10) # 10hz
 
 	while not rospy.is_shutdown():
-		# hello_str = "Hello world!"
-		# rospy.loginfo(hello_str)
+
 		rate.sleep()
 
 if __name__ == '__main__':
