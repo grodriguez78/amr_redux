@@ -1,0 +1,20 @@
+float32 x_left
+float32 y_left
+float32 trig_left
+float32 x_right
+float32 y_right
+float32 trig_right
+
+bool triangle
+bool square
+bool cross
+bool circle
+bool left_bumper
+bool right_bumper
+bool trigger_left
+bool trigger_right
+bool share
+bool options
+bool home
+bool left_stick
+bool right_stick
