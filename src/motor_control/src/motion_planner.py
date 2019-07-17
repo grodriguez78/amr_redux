@@ -18,7 +18,7 @@ class Planner():
 	def rem_cmd_callback(self, data):
 		## Convert joystick inputs to wheel commands 
 
-		if self.state == 0 or self.state == 1:
+		if self.state == 1:
 			self.cmd_right = motors.w_max * data.y_right
 			self.cmd_left = motors.w_max * data.y_left
 		
