@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import time
-
 import rospy
+import RPi.GPIO as GPIO
+
 
 from system_state.msg import WorkerState
 from remote_command.msg import DualshockInputs
@@ -11,6 +12,15 @@ STATE_NAME_MAP= {
 	1: 'MANUAL CONTROL', 
 	2: 'AUTONOMOUS CONTROL'
 }
+
+STATE_PINS = {
+	0: 17,	## Red
+	1: 27,	## Yellow
+	2: 22	## Green
+}
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(STATE_PINS.values(), GPIO.OUT, initial=GPIO.LOW)
 
 class WorkerStateMachine():
 
@@ -25,9 +35,18 @@ class WorkerStateMachine():
 		return not self.triangle and triangle_state
 
 
+	def display_state(state):
+
+		for pin in STATE_PINS.values():
+			GPIO.output(pin, 0)
+
+		GPIO.output(STATE_PINS[state], 1)
+
+
 	def change_state(self, new_state):
 		state_change_msg = ' Lilboi transitioned from state %i (%s) to state %i (%s)'%(self.state, STATE_NAME_MAP[self.state], new_state, STATE_NAME_MAP[new_state])
 		rospy.loginfo(rospy.get_caller_id() + state_change_msg)
+		display_state(state)
 		self.state = new_state
 
 
