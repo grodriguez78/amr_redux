@@ -1,0 +1,4 @@
+<launch>
+	<node name="remote_commands" pkg="remote_command" type="command_node.py" />
+	<node name="motion_planner" pkg="motor_control" type="motion_planner.py" />
+</launch>
