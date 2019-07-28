@@ -1,4 +1,4 @@
 <launch>
 	<node name="controller" pkg="motor_control" type="controller.py" />
-	<node name="lilboi_state" pkg="system_state" type="worker_state_machine.py"
+	<node name="lilboi_state" pkg="system_state" type="worker_state_machine.py" />
 </launch>
