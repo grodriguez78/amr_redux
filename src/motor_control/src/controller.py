@@ -8,6 +8,7 @@ from utils import scale_velocity
 
 mcPins = [16, 20, 19, 26] # pins used for motor control
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
 

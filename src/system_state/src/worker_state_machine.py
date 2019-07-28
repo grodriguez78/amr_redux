@@ -19,6 +19,7 @@ STATE_PINS = {
 	2: 22	## Green
 }
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(STATE_PINS.values(), GPIO.OUT, initial=GPIO.LOW)
 
@@ -93,4 +94,5 @@ if __name__ == '__main__':
 		n = WorkerStateMachine()
 		n.run_state_machine()
 	except rospy.ROSInterruptException:
+		GPIO.cleanup()
 		pass
