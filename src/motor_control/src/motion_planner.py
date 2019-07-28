@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 import rospy
+import numpy as np
 
 from motor_control.msg import WheelVelocity
 from system_state.msg import WorkerState
 from remote_command.msg import DualshockInputs
-from hardware_config import motors
+from hardware_config import motors, wheels, chassis
 
 class Planner():
 
@@ -14,13 +15,31 @@ class Planner():
 		self.cmd_right = 0
 		self.cmd_left = 0
 
+		""" Forward kinematic model for manual control
+			
+			[w_r, w_l]^-1 = inv(K_man) [v_x, psi]
+
+		"""
+		self.K_man = (wheels.r / 2) * np.array([[1, 1],[2 / chassis.d_base, -2 / chassis.d_base]])
+
+		self.max_v = 0.25
+		self.max_w = 1.75
+
 
 	def rem_cmd_callback(self, data):
 		## Convert joystick inputs to wheel commands 
 
+		## Manual Control, convert joystick axis to robot v, w
 		if self.state == 1:
-			self.cmd_right = motors.w_max * data.y_right
-			self.cmd_left = motors.w_max * data.y_left
+
+			## Convert joystick values to m/s, rad/s values
+			v = data.y_left * self.max_v
+			w_cmd = -1.0 * data.x_right * self.max_w
+
+			cmds = np.matmul(np.linalg.inv(self.K_man), np.array([v, w_cmd]))
+
+			self.cmd_right = cmds[0]
+			self.cmd_left = cmds[1]
 		
 		## TODO: Remove this once autonomous commands are implemented
 		else:

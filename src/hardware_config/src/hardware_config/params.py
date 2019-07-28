@@ -10,7 +10,8 @@ class motors():
 
 	w_max = 20 ## Max motor angular velocity (rad/s) 
 
-
 class chassis():
-	r_wheel = 1.75 ## Wheel radius (cm)
-	d_base = 17.8 ## Wheelbase diameter (cm)
+	d_base = 0.17 ## Wheelbase diameter (m)
+
+class wheels():
+	r = 0.0175 	## Wheel radius (m)
