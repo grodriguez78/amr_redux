@@ -14,9 +14,9 @@ STATE_NAME_MAP= {
 }
 
 STATE_PINS = {
-	0: 17,	## Red
-	1: 27,	## Yellow
-	2: 22	## Green
+	0: 22,	## Red
+	1: 18,	## Yellow
+	2: 17	## Green
 }
 
 GPIO.setwarnings(False)
@@ -25,30 +25,33 @@ GPIO.setup(STATE_PINS.values(), GPIO.OUT, initial=GPIO.LOW)
 
 class WorkerStateMachine():
 
-	def __init__(self):
+	def __init__(self, state= 0):
 		self.state = 0
 		self.pub = None
 		self.sub = None
 		self.triangle = None
+
+		## Set initial state
+		self.change_state(state)
 
 
 	def triangle_pressed(self, triangle_state):
 		return not self.triangle and triangle_state
 
 
-	def display_state(state):
+	def display_state(self):
 
 		for pin in STATE_PINS.values():
 			GPIO.output(pin, 0)
 
-		GPIO.output(STATE_PINS[state], 1)
+		GPIO.output(STATE_PINS[self.state], 1)
 
 
 	def change_state(self, new_state):
 		state_change_msg = ' Lilboi transitioned from state %i (%s) to state %i (%s)'%(self.state, STATE_NAME_MAP[self.state], new_state, STATE_NAME_MAP[new_state])
 		rospy.loginfo(rospy.get_caller_id() + state_change_msg)
-		#display_state(state)
 		self.state = new_state
+		self.display_state()
 
 
 	def user_input_transitions(self, data):
@@ -69,6 +72,13 @@ class WorkerStateMachine():
 		self.triangle = data.triangle
 
 
+	def shutdown(self):
+		## Return to state 0
+
+		self.change_state(0)
+		self.pub.publish(self.state)
+
+
 	def run_state_machine(self):
 		## Initialize state machine and publish the current state of this worker
 
@@ -79,15 +89,13 @@ class WorkerStateMachine():
 
 		## TODO: Charging auto-transitions
 
-		## Default to state 0 (CHARGING/INACTIVE)
-		state = 0
-		self.change_state(0)
-
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
 			self.pub.publish(self.state)
 
 			rate.sleep()
+
+		self.shutdown()
 
 
 if __name__ == '__main__':
