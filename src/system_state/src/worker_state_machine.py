@@ -47,7 +47,7 @@ class WorkerStateMachine():
 	def change_state(self, new_state):
 		state_change_msg = ' Lilboi transitioned from state %i (%s) to state %i (%s)'%(self.state, STATE_NAME_MAP[self.state], new_state, STATE_NAME_MAP[new_state])
 		rospy.loginfo(rospy.get_caller_id() + state_change_msg)
-		display_state(state)
+		#display_state(state)
 		self.state = new_state
 
 
@@ -88,6 +88,7 @@ class WorkerStateMachine():
 			self.pub.publish(self.state)
 
 			rate.sleep()
+
 
 if __name__ == '__main__':
 	try:
