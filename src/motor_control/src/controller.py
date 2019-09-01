@@ -21,10 +21,10 @@ right_fwd = GPIO.PWM(16, 100)
 right_bkwds = GPIO.PWM(20, 100)
 
 ## Encoder pins
-left_clk = 23
-left_dt = 22
-right_clk = 4
-right_dt = 5
+left_clk = 4
+left_dt = 5
+right_clk = 23
+right_dt = 22
 
 
 def set_wheel_velocities(w_left, w_right):
@@ -78,15 +78,10 @@ def controller():
 	while not rospy.is_shutdown():
 		
 		## Read encoders
-		if GPIO.input(left_clk):
-			rospy.loginfo(rospy.get_caller_id() + ' left_clk HIGH')
-		else:
-			rospy.loginfo(rospy.get_caller_id() + ' left_clk LOW')
-
-		if GPIO.input(left_dt):
-			rospy.loginfo(rospy.get_caller_id() + ' left_dt HIGH ')
-		else:
-			rospy.loginfo(rospy.get_caller_id() + ' left_dt LOW')
+		print 'left_clk: ' + GPIO.input(left_clk)
+		print 'left_dt: ' + GPIO.input(left_dt)
+		print 'right_clk: ' + GPIO.input(right_clk)
+		print 'right_ct: ' + GPIO.input(right_dt)
 
 		rate.sleep()
 
