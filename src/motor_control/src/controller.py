@@ -6,16 +6,25 @@ from motor_control.msg import WheelVelocity
 
 from utils import scale_velocity
 
-mcPins = [16, 20, 19, 26] # pins used for motor control
+mcPins = [16, 20, 19, 26] 	# GPIO pins used for motor control
+encPins = [4, 5, 22, 23] 	# GPIO pins used to read encoders
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(mcPins, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(encPins, GPIO.IN)
 
+## Control pins
 left_fwd = GPIO.PWM(26, 100)
 left_bkwds = GPIO.PWM(19, 100)
 right_fwd = GPIO.PWM(16, 100)
 right_bkwds = GPIO.PWM(20, 100)
+
+## Encoder pins
+left_clk = 23
+left_dt = 22
+right_clk = 4
+right_dt = 5
 
 
 def set_wheel_velocities(w_left, w_right):
@@ -65,7 +74,19 @@ def controller():
 
 	rate = rospy.Rate(10) # 10hz
 
+
 	while not rospy.is_shutdown():
+		
+		## Read encoders
+		if GPIO.input(left_clk):
+			rospy.loginfo(rospy.get_caller_id() + ' left_clk HIGH')
+		else:
+			rospy.loginfo(rospy.get_caller_id() + ' left_clk LOW')
+
+		if GPIO.input(left_dt):
+			rospy.loginfo(rospy.get_caller_id() + ' left_dt HIGH ')
+		else:
+			rospy.loginfo(rospy.get_caller_id() + ' left_dt LOW')
 
 		rate.sleep()
 
