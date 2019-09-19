@@ -12,7 +12,7 @@ from utils import scale_velocity
 
 class Controller():
 
-	def __init__():
+	def __init__(self):
 		""" Initialize class
 
 		"""
@@ -55,7 +55,7 @@ class Controller():
 		self.w_right_meas = 0.0
 
 
-	def encoder_direction(wheel):
+	def encoder_direction(self, wheel):
 		""" Determine encoder direction from the current state of clk and dt pins
 			
 			clk 	pin number for an encoder's clk output
@@ -77,7 +77,7 @@ class Controller():
 
 		return direction
 
-	def left_up(channel):
+	def left_up(self, channel):
 		""" Note the time the left encoder's clk went high and determine which
 			direction the left wheel is turning
 		"""
@@ -98,7 +98,7 @@ class Controller():
 		print "Left Wheel Angular Velocity: %0.2f"%self.w_left
 
 
-	def right_up(channel):
+	def right_up(self, channel):
 		""" Note the time the right encoder's clk went high and determine which
 			direction the wheel is turning
 		"""
@@ -119,7 +119,7 @@ class Controller():
 		print "Right Wheel Angular Velocity: %0.2f"%self.w_right_meas
 
 
-	def set_wheel_velocities(w_left, w_right):
+	def set_wheel_velocities(self, w_left, w_right):
 		""" Drive left and right wheels at angular velocities w_l, w_r
 
 		"""
@@ -151,14 +151,14 @@ class Controller():
 			right_bkwds.stop()
 
 
-	def callback(data):
+	def callback(self, data):
 		rospy.loginfo(rospy.get_caller_id() + " w_left: %d", data.w_left)
 		rospy.loginfo(rospy.get_caller_id() + " w_right: %d", data.w_right)
 
 		self.set_wheel_velocities(data.w_left, data.w_right)
 
 
-	def run():
+	def run(self):
 		## Convert angular velocity signal into individual PWM signals
 		rospy.init_node('controller', anonymous=True)
 
