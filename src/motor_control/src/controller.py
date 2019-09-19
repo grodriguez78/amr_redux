@@ -78,10 +78,10 @@ def controller():
 	while not rospy.is_shutdown():
 		
 		## Read encoders
-		print 'left_clk: ' + GPIO.input(left_clk)
-		print 'left_dt: ' + GPIO.input(left_dt)
-		print 'right_clk: ' + GPIO.input(right_clk)
-		print 'right_ct: ' + GPIO.input(right_dt)
+		print 'left_clk: ' + str(GPIO.input(left_clk))
+		print 'left_dt: ' + str(GPIO.input(left_dt))
+		print 'right_clk: ' + str(GPIO.input(right_clk))
+		print 'right_ct: ' + str(GPIO.input(right_dt))
 
 		rate.sleep()
 
