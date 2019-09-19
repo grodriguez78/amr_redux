@@ -36,6 +36,9 @@ LAST_TRIG_RIGHT = 0.0
 ## Angular distance of a single encoder step, in radians
 KY_040_STEP = 2 * np.pi / 30
 
+## Calculate bouncetime (ms) from max angular velocity
+BOUNCETIME = int(1000 * 0.5 * KY_040_STEP / 20)
+
 def encoder_direction(clk, dt):
 	""" Determine encoder direction from the current state of clk and dt pins
 		
@@ -148,8 +151,11 @@ def controller():
 	LAST_TRIG_LEFT = time.time()
 	LAST_TRIG_RIGHT = time.time()
 
-	while not rospy.is_shutdown():
+	# Setup encoder interrupt callbacks
+	GPIO.add_event_detect(left_clk, GPIO.RISING, callback= left_up, bouncetime= BOUNCETIME)
+	GPIO.add_event_detect(right_clk, GPIO.RISING, callback= right_up, bouncetime= BOUNCETIME)
 
+	while not rospy.is_shutdown():
 		rate.sleep()
 
 if __name__ == '__main__':
