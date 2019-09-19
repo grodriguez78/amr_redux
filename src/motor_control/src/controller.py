@@ -90,7 +90,7 @@ class Controller():
 
 		# Calculate angular velocity
 		d_t = t_trig - self.last_trig_left
-		self.w_left = direction * KY_040_STEP / d_t
+		self.w_left = direction * self.enc_step_size / d_t
 
 		# Reset recorded trigger time
 		self.last_trig_left = t_trig
@@ -111,7 +111,7 @@ class Controller():
 
 		# Calculate measured angular velocity
 		d_t = t_trig - self.last_trig_right
-		self.w_right_meas = direction * KY_040_STEP / d_t
+		self.w_right_meas = direction * self.enc_step_size / d_t
 
 		# Reset recorded trigger time
 		self.last_trig_right = t_trig
@@ -162,7 +162,7 @@ class Controller():
 		## Convert angular velocity signal into individual PWM signals
 		rospy.init_node('controller', anonymous=True)
 
-		s = rospy.Subscriber("robot_dynamics", WheelVelocity, callback)
+		s = rospy.Subscriber("robot_dynamics", WheelVelocity, self.callback)
 
 		rate = rospy.Rate(10) # 10hz
 
@@ -170,8 +170,8 @@ class Controller():
 		self.last_trig_right = time.time()
 
 		# Setup encoder interrupt callbacks
-		GPIO.add_event_detect(self.left_clk, GPIO.RISING, callback= self.left_up, bouncetime= BOUNCETIME)
-		GPIO.add_event_detect(self.right_clk, GPIO.RISING, callback= self.right_up, bouncetime= BOUNCETIME)
+		GPIO.add_event_detect(self.left_clk, GPIO.RISING, callback= self.left_up, bouncetime= self.bouncetime)
+		GPIO.add_event_detect(self.right_clk, GPIO.RISING, callback= self.right_up, bouncetime= self.bouncetime)
 
 		while not rospy.is_shutdown():
 			rate.sleep()
