@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 import rospy
-import RPi.GPIO as GPIO
-from motor_control.msg import WheelVelocity
+import time
+import numpy as np
 
+import RPi.GPIO as GPIO
+
+from motor_control.msg import WheelVelocity
 from utils import scale_velocity
 
 mcPins = [16, 20, 19, 26] 	# GPIO pins used for motor control
@@ -25,6 +28,74 @@ left_clk = 6
 left_dt = 13
 right_clk = 23
 right_dt = 24
+
+## Storage for encoder trigger times
+LAST_TRIG_LEFT = 0.0
+LAST_TRIG_RIGHT = 0.0
+
+## Angular distance of a single encoder step, in radians
+KY_040_STEP = 2 * np.pi / 30
+
+def encoder_direction(clk, dt):
+	""" Determine encoder direction from the current state of clk and dt pins
+		
+		clk 	pin number for an encoder's clk output
+		dt 		pin number for an encoder's dt output
+
+		return   1 - clockwise direction
+			    -1 - counter-clockwise direction
+	"""
+
+	# Wheel is rotating clockwise
+	if GPIO.input(left_clk) != GPIO.input(left_dt):
+		direction = 1
+
+	# Wheel is rotating counter-clockwise
+	else:
+		direction = -1
+
+	return direction
+
+def left_up(channel):
+	""" Note the time the left encoder's clk went high and determine which
+		direction the left wheel is turning
+	"""
+
+	# Record trigger time
+	t_trig = time.time()
+
+	# Determine rotation direction
+	direction = encoder_direction(left_clk, left_dt)
+
+	# Calculate angular velocity
+	d_t = t_trig - LAST_TRIG_LEFT
+	w = direction * KY_040_STEP / d_t
+
+	# Reset recorded trigger time
+	LAST_TRIG_LEFT = t_trig
+
+	print "Left Wheel Angular Velocity: %0.2f"%w
+
+
+def right_up(channel):
+	""" Note the time the right encoder's clk went high and determine which
+		direction the wheel is turning
+	"""
+
+	# Record trigger time
+	t_trig = time.time()
+
+	# Determine rotation direction
+	direction = encoder_direction(right_clk, right_dt)
+
+	# Calculate angular velocity
+	d_t = t_trig - LAST_TRIG_RIGHT
+	w = direction * KY_040_STEP / d_t
+
+	# Reset recorded trigger time
+	LAST_TRIG_RIGHT = t_trig
+
+	print "Right Wheel Angular Velocity: %0.2f"%w
 
 
 def set_wheel_velocities(w_left, w_right):
@@ -74,14 +145,10 @@ def controller():
 
 	rate = rospy.Rate(10) # 10hz
 
+	LAST_TRIG_LEFT = time.time()
+	LAST_TRIG_RIGHT = time.time()
 
 	while not rospy.is_shutdown():
-		
-		## Read encoders
-		print 'left_clk: ' + str(GPIO.input(left_clk))
-		print 'left_dt: ' + str(GPIO.input(left_dt))
-		print 'right_clk: ' + str(GPIO.input(right_clk))
-		print 'right_ct: ' + str(GPIO.input(right_dt))
 
 		rate.sleep()
 
