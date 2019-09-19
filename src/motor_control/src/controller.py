@@ -7,7 +7,7 @@ from motor_control.msg import WheelVelocity
 from utils import scale_velocity
 
 mcPins = [16, 20, 19, 26] 	# GPIO pins used for motor control
-encPins = [4, 5, 22, 23] 	# GPIO pins used to read encoders
+encPins = [13, 6, 24, 23] 	# GPIO pins used to read encoders
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -21,10 +21,10 @@ right_fwd = GPIO.PWM(16, 100)
 right_bkwds = GPIO.PWM(20, 100)
 
 ## Encoder pins
-left_clk = 4
-left_dt = 5
+left_clk = 6
+left_dt = 13
 right_clk = 23
-right_dt = 22
+right_dt = 24
 
 
 def set_wheel_velocities(w_left, w_right):
