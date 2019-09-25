@@ -15,8 +15,9 @@ import numpy as np
 import RPi.GPIO as GPIO
 
 import hardware_config
+from odometry.msg import EncoderValue
 
-class Encoders():
+class Encoders(object):
 
 	def __init__(self, encoder_params):
 
@@ -43,7 +44,7 @@ class Encoders():
 
 		# Accepted string & int values for encoder directions
 		self.enc_direction_map = {
-			-1: ['ccw', 'counter-clockwise']
+			-1: ['ccw', 'counter-clockwise'],
 			0:  ['stopped'],
 			1:  ['cw', 'clockwise']
 		}

@@ -1,0 +1,2 @@
+string encoder_id
+float32 angular_velocity
