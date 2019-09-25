@@ -12,10 +12,13 @@ import time
 import yaml
 import rospy
 import numpy as np
+import hardware_config
+import pdb; pdb.set_trace()
+
 import RPi.GPIO as GPIO
 
-import hardware_config
 from odometry.msg import EncoderValue
+
 
 class Encoders(object):
 
@@ -212,7 +215,7 @@ if __name__ == '__main__':
 	try:
 
 		# Load encoder configuration
-		sensor_config_file = os.path.abspath(hardware_config.sensor_config)
+		sensor_config_file = hardware_config.__path__[-1] + '/sensor_config.yaml'
 		with open(sensor_config_file) as stream:
 			sensor_configs = yaml.load(stream)
 		encoder_params = sensor_configs['encoders']

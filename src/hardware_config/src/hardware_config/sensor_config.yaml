@@ -1,21 +1,20 @@
-""" Sensor Configuration File
-
-    This file contains hardware specifications for various sensors on lilboi.
-    
-    The general structure of these specifications is:
-    sensor_type
-        instances:
-            sensor_id_0
-                param_1: value
-                param_2: value
-                ...
-            sensor_id_1
-            ...
-        specs:
-           spec_1: value
-           spec_2: value
-           ...
-"""
+# Sensor Configuration File
+#
+# This file contains hardware specifications for various sensors on lilboi.
+#
+# The general structure of these specifications is:
+# sensor_type
+#     instances:
+#         sensor_id_0
+#             param_1: value
+#             param_2: value
+#             ...
+#         sensor_id_1
+#         ...
+#     specs:
+#        spec_1: value
+#        spec_2: value
+#        ...
 
 encoders:
     instances:
