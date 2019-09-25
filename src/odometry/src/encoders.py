@@ -12,11 +12,9 @@ import time
 import yaml
 import rospy
 import numpy as np
-import hardware_config
-import pdb; pdb.set_trace()
-
 import RPi.GPIO as GPIO
 
+import hardware_config
 from odometry.msg import EncoderValue
 
 
@@ -69,7 +67,7 @@ class Encoders(object):
 			encoder_pins += pins.values()
 
 			# Save pins
-			for pin_name, pin in pins: setattr(self, encoder_id + '_' + pin_name, pin)
+			for pin_name, pin in pins.items(): setattr(self, encoder_id + '_' + pin_name, pin)
 		self.encoder_pins = encoder_pins 
 
 
@@ -98,7 +96,7 @@ class Encoders(object):
 		""" Return the encoder's current step count
 
 		"""
-		return getattr(self, encoder_id, '_step_count')
+		return getattr(self, encoder_id + '_step_count')
 
 
 	def set_encoder_direction(self, encoder_id, direction):
@@ -187,7 +185,7 @@ class Encoders(object):
 
 		# Initialize encoder reset times
 		for encoder_id in self.encoder_ids:
-			self.reset_encoder()
+			self.reset_encoder(encoder_id)
 
 		# Setup encoder interrupt callbacks
 		## TODO: Generalize this with a lambda call so a unique function is not needed
@@ -201,7 +199,7 @@ class Encoders(object):
 			for encoder_id in self.encoder_ids:
 
 				# Calculate time since last reset
-				d_t = time.time() - get_encoder_reset_time(encoder_id)
+				d_t = time.time() - self.get_encoder_reset_time(encoder_id)
 				w_meas = self.get_encoder_direction(encoder_id) * self.get_encoder_step_count(encoder_id) * self.enc_step_size / d_t
 				print "Encoder %s: Measured angular velocity %0.2f"%(encoder_id, w_meas) 
 
