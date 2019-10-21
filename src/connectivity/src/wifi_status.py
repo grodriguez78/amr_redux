@@ -12,8 +12,17 @@ import yaml
 
 import hardware_config
 
+# Setup logging to repo's /logs directory
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
+f_handler = logging.FileHandler(os.environ["HOME"] + '/amr_redux/logs/wifi_status.log')
+f_handler.setLevel(logging.INFO)
 
+f_format = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s")
+f_handler.setFormatter(f_format)
+
+logger.addHandler(f_handler)
 
 def ping_ros_master():
 	"""Ping the ROS master and return result.
@@ -36,9 +45,9 @@ def update_led(status):
 	"""
 
 	if status:
-		logging.info("Connected!")
+		logger.info("Connected!")
 	else:
-		logging.info("Disconnected!")
+		logger.info("Disconnected!")
 
 
 def status_from_response(resp):
@@ -77,7 +86,7 @@ def main(freq= 1.0):
 	with open(display_config_file) as stream:
 		display_hardware_params = yaml.load(stream) 
 	wifi_pin = display_hardware_params['leds']['wifi']
-	logging.info("Displaying WiFi status on GPIO Pin %i"%wifi_pin)
+	logger.info("Displaying WiFi status on GPIO Pin %i"%wifi_pin)
 
 	# Turn off LED by default
 	last_status = False
@@ -97,6 +106,4 @@ def main(freq= 1.0):
 		time.sleep(freq)
 
 if __name__ == "__main__":
-	logging.basicConfig(format= "%(asctime)s %(levelname)s: %(message)s", level= logging.INFO,
-						filename= 'wifi_status.log')
 	main()
