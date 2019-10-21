@@ -45,9 +45,9 @@ def update_led(status):
 	"""
 
 	if status:
-		logger.info("Connected!")
+		logger.info("Connected to ROS Master!")
 	else:
-		logger.info("Disconnected!")
+		logger.info("Disconnected from ROS Master!")
 
 
 def status_from_response(resp):
