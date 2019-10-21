@@ -1,0 +1,4 @@
+## GPIO pins used for UI displays
+
+leds:
+  wifi: 4
